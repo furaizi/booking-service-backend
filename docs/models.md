@@ -6,7 +6,7 @@
 <div hidden>
 
 ```
-@startuml business-objects-model
+@startuml
 
 entity User #green
 entity Train #green
@@ -86,3 +86,167 @@ Seat.type --* Seat
 </div>
 
 ![](img/business-objects-model.svg)
+
+
+
+## ER-модель
+
+### User Service
+
+<div hidden>
+
+```
+@startuml userservice
+
+class User {
+  +userId: Long
+  +email: String
+  +passwordHash: String
+  +fullName: String
+  +phoneNumber: String
+  +role: String
+  +createdAt: DateTime
+  +updatedAt: DateTime
+}
+
+User "1" --> "0..*" Ticket : has
+
+@enduml
+```
+
+</div>
+
+![](img/userservice.svg)
+
+
+
+### Train Service
+
+<div hidden>
+
+```
+@startuml trainservice
+
+class Train {
+  +trainId: Long
+  +trainNumber: String
+  +name: String
+  +totalCars: Int
+  +createdAt: DateTime
+}
+
+class Station {
+  +stationId: Long
+  +name: String
+  +city: String
+  +country: String
+  +createdAt: DateTime
+}
+
+class Route {
+  +routeId: Long
+  +trainId: Long
+  +stationId: Long
+  +arrivalTime: DateTime
+  +departureTime: DateTime
+  +stopOrder: Int
+  +createdAt: DateTime
+}
+
+class Car {
+  +carId: Long
+  +trainId: Long
+  +carNumber: Int
+  +type: String
+  +totalSeats: Int
+}
+
+class Seat {
+  +seatId: Long
+  +carId: Long
+  +seatNumber: Int
+  +type: String
+}
+
+Train "1" --> "0..*" Route : follows
+Train "1" --> "0..*" Car : has
+Car "1" --> "0..*" Seat : contains
+Station "1" --> "0..*" Route : part of
+
+Route "2" --> "1" Ticket : listed in
+Seat "1" --> "1" Ticket : reserved by
+
+
+@enduml
+```
+
+</div>
+
+![](img/trainservice.svg)
+
+### Booking Service
+
+<div hidden>
+
+```
+@startuml bookingservice
+class Ticket {
+  +ticketId: Long
+  +userId: Long
+  +trainId: Long
+  +carId: Long
+  +seatId: Long
+  +departureStationId: Long
+  +arrivalStationId: Long
+  +price: Decimal
+  +status: String
+  +bookedAt: DateTime
+}
+
+
+
+Ticket "1" --> "1" User : belongs to
+Ticket "1" --> "1" Seat : reserves
+Ticket "1" --> "1" Payment : processes
+Ticket "1" --> "1" Route : departure
+Ticket "1" --> "1" Route : arrival
+
+@enduml
+```
+
+</div>
+
+![](img/bookingservice.svg)
+
+
+
+### Payment Service
+
+<div hidden>
+
+```
+@startuml paymentservice
+class Payment {
+  +ticketId: Long
+  +userId: Long
+  +amount: Decimal
+  +paymentMethod: String
+  +status: String
+  +createdAt: DateTime
+}
+
+Payment "1" --> "0..*" Ticket : linked to
+
+@enduml
+```
+
+</div>
+
+![](img/paymentservice.svg)
+
+
+### Notification Service
+
+Не зберігає дані
+
+</div>
