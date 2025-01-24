@@ -3,9 +3,10 @@
 
 ## Загальна модель бізнес-об'єктів
 
-<div hidden>
+<details>
+<summary>PlantUML code</summary>
 
-```
+```plantuml
 @startuml
 
 entity User #green
@@ -83,7 +84,7 @@ Seat.type --* Seat
 @enduml
 ```
 
-</div>
+</details>
 
 ![](img/business-objects-model.svg)
 
@@ -93,9 +94,10 @@ Seat.type --* Seat
 
 ### User Service
 
-<div hidden>
+<details>
+<summary>PlantUML code</summary>
 
-```
+```plantuml
 @startuml userservice
 
 class User {
@@ -114,7 +116,7 @@ User "1" --> "0..*" Ticket : has
 @enduml
 ```
 
-</div>
+</details>
 
 ![](img/userservice.svg)
 
@@ -122,9 +124,10 @@ User "1" --> "0..*" Ticket : has
 
 ### Train Service
 
-<div hidden>
+<details>
+<summary>PlantUML code</summary>
 
-```
+```plantuml
 @startuml trainservice
 
 class Train {
@@ -180,15 +183,16 @@ Seat "1" --> "1" Ticket : reserved by
 @enduml
 ```
 
-</div>
+</details>
 
 ![](img/trainservice.svg)
 
 ### Booking Service
 
-<div hidden>
+<details>
+<summary>PlantUML code</summary>
 
-```
+```plantuml
 @startuml bookingservice
 class Ticket {
   +ticketId: Long
@@ -214,7 +218,7 @@ Ticket "1" --> "1" Route : arrival
 @enduml
 ```
 
-</div>
+</details>
 
 ![](img/bookingservice.svg)
 
@@ -222,9 +226,10 @@ Ticket "1" --> "1" Route : arrival
 
 ### Payment Service
 
-<div hidden>
+<details>
+<summary>PlantUML code</summary>
 
-```
+```plantuml
 @startuml paymentservice
 class Payment {
   +ticketId: Long
@@ -240,7 +245,7 @@ Payment "1" --> "0..*" Ticket : linked to
 @enduml
 ```
 
-</div>
+</details>
 
 ![](img/paymentservice.svg)
 
@@ -249,4 +254,3 @@ Payment "1" --> "0..*" Ticket : linked to
 
 Не зберігає дані
 
-</div>
