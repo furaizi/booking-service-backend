@@ -10,15 +10,16 @@ public record User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id,
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     String firstName,
-    @Column(nullable = false)
+    @Column(length = 50, nullable = false)
     String lastName,
     @Column(nullable = false)
     String passwordHash,
+    @Column(length = 100)
     String email,
     @Column(length = 20, nullable = false, unique = true)
-    String phone,
+    String phoneNumber,
     Role role,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
