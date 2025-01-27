@@ -6,6 +6,8 @@ import com.example.userservice.model.UserDTO;
 public class UserMapper {
 
     public static UserDTO toDTO(User user) {
+        if (user == null)
+            return null;
         return new UserDTO(
             user.id(),
             user.firstName(),
