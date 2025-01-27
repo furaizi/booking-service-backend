@@ -15,6 +15,6 @@ public interface UserService {
     UserDTO getUserByEmail(String email);
     UserDTO addUser(UserDTO userDTO);
     @Nullable
-    UserDTO updateUser(UserDTO userDTO);
+    UserDTO updateUser(Long id, UserDTO userDTO);
     void deleteUser(Long id);
 }

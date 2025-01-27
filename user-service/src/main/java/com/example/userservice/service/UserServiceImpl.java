@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Nullable
-    public UserDTO updateUser(UserDTO userDTO) {
-        if (userRepository.existsById(userDTO.getId())) {
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        if (id.equals(userDTO.getId()) && userRepository.existsById(id)) {
             var user = userRepository.save(UserMapper.toEntity(userDTO));
             return UserMapper.toDTO(user);
         }
