@@ -1,6 +1,5 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.model.User;
 import com.example.userservice.model.UserDTO;
 import com.example.userservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
