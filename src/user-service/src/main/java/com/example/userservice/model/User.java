@@ -1,7 +1,6 @@
 package com.example.userservice.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +25,3 @@ public record User(
 ) {
 }
 
-enum Role {
-    USER,
-    ADMIN
-}

@@ -1,5 +1,6 @@
 package com.example.userservice.model;
 
+import com.example.userservice.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
