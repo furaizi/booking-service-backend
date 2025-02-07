@@ -39,6 +39,9 @@ public class UserControllerImpl {
     @ApiResponse(responseCode = "404", description = "User not found")
     public ResponseEntity<UserDTO> getUserById(
             @PathVariable @Parameter(description = "User ID", example = "123") Long id) {
+        final var user = userService.getUser(id);
+        if (user == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.getUser(id));
     }
 
@@ -50,7 +53,6 @@ public class UserControllerImpl {
     public ResponseEntity<?> searchUser(
             @RequestParam(required = false) @Parameter(description = "Phone number") String phone,
             @RequestParam(required = false) @Parameter(description = "Email address") String email) {
-
         if (phone != null && email != null) {
             return ResponseEntity.badRequest().body("Provide either phone or email, not both");
         }
@@ -58,10 +60,12 @@ public class UserControllerImpl {
             return ResponseEntity.badRequest().body("Either phone or email must be provided");
         }
 
-        var user = (phone != null)
+        final var user = (phone != null)
                 ? userService.getUserByPhone(phone)
                 : userService.getUserByEmail(email);
 
+        if (user == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(user);
     }
 
@@ -83,6 +87,9 @@ public class UserControllerImpl {
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable @Parameter(description = "User ID", example = "123") Long id,
             @Valid @RequestBody @Parameter(description = "Updated user data") UserDTO user) {
+        final var updated = userService.updateUser(id, user);
+        if (updated == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userService.updateUser(id, user));
     }
 

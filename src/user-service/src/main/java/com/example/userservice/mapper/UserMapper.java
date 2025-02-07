@@ -9,13 +9,13 @@ public class UserMapper {
         if (user == null)
             return null;
         return new UserDTO(
-            user.id(),
-            user.firstName(),
-            user.lastName(),
-            user.passwordHash(),
-            user.email(),
-            user.phoneNumber(),
-            user.role()
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getPasswordHash(),
+            user.getEmail(),
+            user.getPhoneNumber(),
+            user.getRole()
         );
     }
 
