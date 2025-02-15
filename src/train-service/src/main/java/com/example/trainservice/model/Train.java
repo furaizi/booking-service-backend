@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.List;
 
@@ -11,18 +12,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Car {
+public class Train {
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "train_id")
-    private Train train;
-    private int number;
-    private CarType type;
+    @NaturalId
+    private String number;
+    private String name;
+    private int totalCars;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<Seat> seats;
-    private int totalSeats;
+    @OneToMany(mappedBy = "train", cascade = CascadeType.ALL)
+    private List<Car> cars;
 }

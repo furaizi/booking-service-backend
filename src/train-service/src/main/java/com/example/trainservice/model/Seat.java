@@ -17,7 +17,6 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
-
     private int number;
     private SeatType type;
 }
