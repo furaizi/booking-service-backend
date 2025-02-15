@@ -27,7 +27,7 @@ public class Train {
     private String name;
 
     @Column(nullable = false)
-    private int totalCars;
+    private Integer totalCars;
 
     @OneToMany(mappedBy = "train", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Car> cars;

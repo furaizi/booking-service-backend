@@ -25,7 +25,7 @@ public class Seat {
     private Car car;
 
     @Column(nullable = false)
-    private int number;
+    private Integer number;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

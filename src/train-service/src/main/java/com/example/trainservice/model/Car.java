@@ -26,7 +26,7 @@ public class Car {
     private Train train;
 
     @Column(nullable = false)
-    private int number;
+    private Integer number;
 
     @Column(nullable = false)
     private CarType type;
@@ -35,7 +35,7 @@ public class Car {
     private List<Seat> seats;
 
     @Column(nullable = false)
-    private int totalSeats;
+    private Integer totalSeats;
 
     @CreationTimestamp
     @Column(updatable = false)
