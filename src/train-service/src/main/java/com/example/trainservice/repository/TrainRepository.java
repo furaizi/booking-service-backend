@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TrainRepository extends JpaRepository<Train, Long> {
+    boolean existsByNumber(String number);
+    void deleteByNumber(String number);
     Optional<Train> findByNumber(String number);
 
     @Query("SELECT DISTINCT t " +

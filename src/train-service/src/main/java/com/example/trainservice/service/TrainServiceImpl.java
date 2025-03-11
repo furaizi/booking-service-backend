@@ -62,8 +62,8 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional(propagation = Propagation.NESTED)
-    public TrainDTO updateTrain(Long trainId, TrainDTO trainDTO) {
-        if (trainId.equals(trainDTO.getId()) && trainRepository.existsById(trainId)) {
+    public TrainDTO updateTrain(String trainNumber, TrainDTO trainDTO) {
+        if (trainNumber.equals(trainDTO.getNumber()) && trainRepository.existsByNumber(trainNumber)) {
             var train = trainRepository.save(trainMapper.toTrain(trainDTO));
             return trainMapper.toTrainDTO(train);
         }
@@ -73,7 +73,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
-    public void deleteTrain(Long trainId) {
-        trainRepository.deleteById(trainId);
+    public void deleteTrain(String trainNumber) {
+        trainRepository.deleteByNumber(trainNumber);
     }
 }

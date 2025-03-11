@@ -14,6 +14,6 @@ public interface TrainService {
     TrainDTO getTrainByNumber(String number);
     TrainDTO addTrain(TrainDTO trainDTO);
     @Nullable
-    TrainDTO updateTrain(Long trainId, TrainDTO trainDTO);
-    void deleteTrain(Long trainId);
+    TrainDTO updateTrain(String trainNumber, TrainDTO trainDTO);
+    void deleteTrain(String trainNumber);
 }
