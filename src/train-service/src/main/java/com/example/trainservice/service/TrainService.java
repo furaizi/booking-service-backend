@@ -10,6 +10,8 @@ public interface TrainService {
     List<TrainDTO> getAllTrainsBetweenStations(String startStationName, String endStationName);
     @Nullable
     TrainDTO getTrainById(Long id);
+    @Nullable
+    TrainDTO getTrainByNumber(String number);
     TrainDTO addTrain(TrainDTO trainDTO);
     @Nullable
     TrainDTO updateTrain(Long trainId, TrainDTO trainDTO);

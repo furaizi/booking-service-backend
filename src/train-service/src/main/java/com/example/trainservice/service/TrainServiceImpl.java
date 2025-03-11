@@ -46,6 +46,14 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public TrainDTO getTrainByNumber(String number) {
+        var train = trainRepository.findByNumber(number)
+                .orElse(null);
+        return trainMapper.toTrainDTO(train);
+    }
+
+    @Override
     @Transactional(propagation = Propagation.NESTED)
     public TrainDTO addTrain(TrainDTO trainDTO) {
         var train = trainRepository.save(trainMapper.toTrain(trainDTO));
