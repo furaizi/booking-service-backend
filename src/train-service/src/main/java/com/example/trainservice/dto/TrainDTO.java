@@ -15,6 +15,7 @@ public class TrainDTO {
     private Long id;
     private String number;
     private String name;
+    private Integer totalCars;
     private List<CarDTO> cars;
     private List<RouteDTO> routes;
 }

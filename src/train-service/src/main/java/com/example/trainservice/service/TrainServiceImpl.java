@@ -30,8 +30,8 @@ public class TrainServiceImpl implements TrainService {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<TrainDTO> getAllTrainsBetweenStations(String startStationName, String endStationName) {
-        var trains = trainRepository.findAllTrainsBetweenStations(startStationName, endStationName);
+    public List<TrainDTO> getAllTrainsBetweenStations(String startStation, String endStation) {
+        var trains = trainRepository.findAllTrainsBetweenStations(startStation, endStation);
         return trains.stream()
                 .map(trainMapper::toTrainDTO)
                 .toList();

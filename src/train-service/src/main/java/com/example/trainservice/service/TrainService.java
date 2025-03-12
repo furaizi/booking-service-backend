@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TrainService {
     List<TrainDTO> getAllTrains();
-    List<TrainDTO> getAllTrainsBetweenStations(String startStationName, String endStationName);
+    List<TrainDTO> getAllTrainsBetweenStations(String startStation, String endStation);
     @Nullable
     TrainDTO getTrainById(Long id);
     @Nullable

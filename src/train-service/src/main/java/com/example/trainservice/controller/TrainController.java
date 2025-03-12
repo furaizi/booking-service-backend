@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TrainController {
     ResponseEntity<List<TrainDTO>> getAllTrains();
-    ResponseEntity<List<TrainDTO>> getAllTrainsBetweenStations(String startStation, String endStation);
+    ResponseEntity<?> getAllTrainsBetweenStations(String startStation, String endStation);
     ResponseEntity<TrainDTO> getTrain(String number);
     ResponseEntity<TrainDTO> createTrain(TrainDTO train);
     ResponseEntity<TrainDTO> updateTrain(String trainNumber, TrainDTO trainDTO);

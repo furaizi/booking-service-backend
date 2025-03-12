@@ -24,10 +24,13 @@ public class TrainControllerImpl implements TrainController {
         return ResponseEntity.ok(trainService.getAllTrains());
     }
 
-    @GetMapping
+    @GetMapping("/search")
     @Override
-    public ResponseEntity<List<TrainDTO>> getAllTrainsBetweenStations(String startStation, String endStation) {
-        return null;
+    public ResponseEntity<?> getAllTrainsBetweenStations(@RequestParam String startStation,
+                                                         @RequestParam String endStation) {
+        if (startStation == null || endStation == null)
+            return ResponseEntity.badRequest().body("Provide both start station and end station");
+        return ResponseEntity.ok(trainService.getAllTrainsBetweenStations(startStation, endStation));
     }
 
     @GetMapping("/{number}")

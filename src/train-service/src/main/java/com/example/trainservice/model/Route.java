@@ -29,7 +29,7 @@ public class Route {
     @JoinColumn(name = "train_id")
     private Train train;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "station_id")
     private Station station;
 

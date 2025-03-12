@@ -41,4 +41,14 @@ public class Train {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Train withAssociations() {
+        if (this.cars != null) {
+            this.cars.forEach(car -> car.setTrain(this));
+        }
+        if (this.routes != null) {
+            this.routes.forEach(route -> route.setTrain(this));
+        }
+        return this;
+    }
 }

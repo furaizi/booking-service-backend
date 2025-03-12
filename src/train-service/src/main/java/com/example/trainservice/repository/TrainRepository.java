@@ -17,9 +17,9 @@ public interface TrainRepository extends JpaRepository<Train, Long> {
             "FROM Train t " +
             "JOIN t.routes r1 " +
             "JOIN t.routes r2 " +
-            "WHERE r1.station.name = :startStationName " +
-            "  AND r2.station.name = :endStationName " +
+            "WHERE r1.station.name = :startStation " +
+            "  AND r2.station.name = :endStation " +
             "  AND r1.stopOrder < r2.stopOrder")
-    List<Train> findAllTrainsBetweenStations(@Param("fromStationName") String startStationName,
-                                              @Param("toStationName") String endStationName);
+    List<Train> findAllTrainsBetweenStations(@Param("startStation") String startStation,
+                                              @Param("endStation") String endStation);
 }
