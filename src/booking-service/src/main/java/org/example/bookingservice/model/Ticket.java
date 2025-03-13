@@ -46,7 +46,7 @@ public class Ticket {
 
     private Double price;
 
-    private String status;
+    private TicketStatus status;
 
     @CreationTimestamp
     private LocalDateTime bookedAt;
