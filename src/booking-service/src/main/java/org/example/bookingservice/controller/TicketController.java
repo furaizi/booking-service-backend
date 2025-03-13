@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface TicketController {
+    ResponseEntity<List<TicketDTO>> getAllTickets();
     ResponseEntity<List<TicketDTO>> getAllTicketsOfUser(Long userId);
     ResponseEntity<List<TicketDTO>> getAllTicketsOfTrain(String trainNumber);
     ResponseEntity<TicketDTO> getTicket(Long id);

@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 import java.util.List;
 
 public interface TicketService {
+    List<TicketDTO> getAllTickets();
     List<TicketDTO> getAllTicketsOfUser(Long userId);
     List<TicketDTO> getAllTicketsOfTrain(String trainNumber);
     @Nullable

@@ -22,6 +22,15 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<TicketDTO> getAllTickets() {
+        var tickets = ticketRepository.findAll();
+        return tickets.stream()
+                .map(ticketMapper::toTicketDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<TicketDTO> getAllTicketsOfUser(Long userId) {
         var tickets = ticketRepository.findAllTicketsByUser_Id(userId);
         return tickets.stream()

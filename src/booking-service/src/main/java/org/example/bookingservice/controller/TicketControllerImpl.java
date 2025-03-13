@@ -18,6 +18,12 @@ public class TicketControllerImpl implements TicketController {
         this.ticketService = ticketService;
     }
 
+    @GetMapping
+    @Override
+    public ResponseEntity<List<TicketDTO>> getAllTickets() {
+        return ResponseEntity.ok(ticketService.getAllTickets());
+    }
+
     @GetMapping()
     @Override
     public ResponseEntity<List<TicketDTO>> getAllTicketsOfUser(@RequestParam Long userId) {
