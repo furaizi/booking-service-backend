@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class Train {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NaturalId
     private String number;
     private String name;
 
