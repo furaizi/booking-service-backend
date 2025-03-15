@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,20 +21,14 @@ public class TicketControllerImpl implements TicketController {
 
     @GetMapping
     @Override
-    public ResponseEntity<List<TicketDTO>> getAllTickets() {
-        return ResponseEntity.ok(ticketService.getAllTickets());
-    }
-
-    @GetMapping()
-    @Override
-    public ResponseEntity<List<TicketDTO>> getAllTicketsOfUser(@RequestParam Long userId) {
-        return ResponseEntity.ok(ticketService.getAllTicketsOfUser(userId));
-    }
-
-    @GetMapping()
-    @Override
-    public ResponseEntity<List<TicketDTO>> getAllTicketsOfTrain(@RequestParam String trainNumber) {
-        return ResponseEntity.ok(ticketService.getAllTicketsOfTrain(trainNumber));
+    public ResponseEntity<List<TicketDTO>> getAllTickets(@RequestParam(required = false) Long userId,
+                                                         @RequestParam(required = false) String trainNumber) {
+        if (userId != null)
+            return ResponseEntity.ok(ticketService.getAllTicketsOfUser(userId));
+        else if (trainNumber != null)
+            return ResponseEntity.ok(ticketService.getAllTicketsOfTrain(trainNumber));
+        else
+            return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
     @GetMapping("/{id}")
