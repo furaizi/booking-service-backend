@@ -1,23 +1,28 @@
 package org.example.bookingservice;
 
+import org.example.bookingservice.dto.TicketDTO;
 import org.example.bookingservice.mapper.TicketMapper;
 import org.example.bookingservice.model.*;
 import org.example.bookingservice.repository.TicketRepository;
 import org.example.bookingservice.service.TicketService;
 import org.example.bookingservice.service.TicketServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
 
     @Mock
@@ -30,144 +35,104 @@ public class TicketServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         ticketMapper = Mappers.getMapper(TicketMapper.class);
         ticketService = new TicketServiceImpl(ticketRepository, ticketMapper);
     }
 
     @Test
-    void testGetAllTickets() {
-        var testTicket = createTestTicket();
+    @DisplayName("Should return all tickets when repository returns tickets")
+    void shouldReturnAllTickets() {
+        final var expectedTicket = createTestTicket();
+        when(ticketRepository.findAll()).thenReturn(List.of(expectedTicket));
 
-        when(ticketRepository.findAll()).thenReturn(List.of(testTicket));
-        var foundTickets = ticketService.getAllTickets();
+        var actualTickets = ticketService.getAllTickets();
 
-        assertNotNull(foundTickets);
-        assertEquals(1, foundTickets.size());
-        assertEquals(testTicket.getPrice(), foundTickets.getFirst().getPrice());
-        assertEquals(testTicket.getStatus(), foundTickets.getFirst().getStatus());
-        assertEquals(testTicket.getUser().getPhoneNumber(), foundTickets.getFirst().getUser().getPhoneNumber());
-        assertEquals(testTicket.getTrain().getName(), foundTickets.getFirst().getTrain().getName());
-
+        assertNotNull(actualTickets, "The returned ticket list should not be null");
+        assertEquals(1, actualTickets.size(), "Ticket list size should be 1");
+        assertTicketEquals(expectedTicket, actualTickets.getFirst());
         verify(ticketRepository, times(1)).findAll();
     }
 
     @Test
-    void testGetAllTicketsOfUser() {
-        var testTicket = createTestTicket();
-        var userId = testTicket.getUser().getId();
+    @DisplayName("Should return tickets for given user")
+    void shouldReturnTicketsForUser() {
+        final var expectedTicket = createTestTicket();
+        final var userId = expectedTicket.getUser().getId();
+        when(ticketRepository.findAllTicketsByUser_Id(userId)).thenReturn(List.of(expectedTicket));
 
-        when(ticketRepository.findAllTicketsByUser_Id(userId)).thenReturn(List.of(testTicket));
-        var foundTickets = ticketService.getAllTicketsOfUser(userId);
+        var actualTickets = ticketService.getAllTicketsOfUser(userId);
 
-        assertNotNull(foundTickets);
-        assertEquals(1, foundTickets.size());
-        assertEquals(testTicket.getPrice(), foundTickets.getFirst().getPrice());
-        assertEquals(testTicket.getStatus(), foundTickets.getFirst().getStatus());
-        assertEquals(testTicket.getUser().getPhoneNumber(), foundTickets.getFirst().getUser().getPhoneNumber());
-        assertEquals(testTicket.getTrain().getName(), foundTickets.getFirst().getTrain().getName());
-
+        assertNotNull(actualTickets, "The returned ticket list should not be null");
+        assertEquals(1, actualTickets.size(), "Ticket list size should be 1");
+        assertTicketEquals(expectedTicket, actualTickets.getFirst());
         verify(ticketRepository, times(1)).findAllTicketsByUser_Id(userId);
     }
 
     @Test
-    void testGetAllTicketsOfNonExistentUser() {
-        var userId = 999L;
+    @DisplayName("Should return empty list for non-existent user")
+    void shouldReturnEmptyTicketsForNonExistentUser() {
+        final var nonExistentUserId = 999L;
+        when(ticketRepository.findAllTicketsByUser_Id(nonExistentUserId)).thenReturn(List.of());
 
-        when(ticketRepository.findAllTicketsByUser_Id(userId)).thenReturn(List.of());
-        var foundTickets = ticketService.getAllTicketsOfUser(userId);
-        assertNotNull(foundTickets);
-        assertEquals(0, foundTickets.size());
+        var actualTickets = ticketService.getAllTicketsOfUser(nonExistentUserId);
 
-        verify(ticketRepository, times(1)).findAllTicketsByUser_Id(userId);
+        assertNotNull(actualTickets, "The returned ticket list should not be null");
+        assertTrue(actualTickets.isEmpty(), "Ticket list should be empty");
+        verify(ticketRepository, times(1)).findAllTicketsByUser_Id(nonExistentUserId);
     }
 
     @Test
-    void getAllTicketsOfTrain() {
-        var testTicket = createTestTicket();
-        var trainNumber = testTicket.getTrain().getNumber();
+    @DisplayName("Should return tickets for given train")
+    void shouldReturnTicketsForTrain() {
+        final var expectedTicket = createTestTicket();
+        final var trainNumber = expectedTicket.getTrain().getNumber();
+        when(ticketRepository.findAllTicketsByTrain_Number(trainNumber)).thenReturn(List.of(expectedTicket));
 
-        when(ticketRepository.findAllTicketsByTrain_Number(trainNumber)).thenReturn(List.of(testTicket));
-        var foundTickets = ticketService.getAllTicketsOfTrain(trainNumber);
+        var actualTickets = ticketService.getAllTicketsOfTrain(trainNumber);
 
-        assertNotNull(foundTickets);
-        assertEquals(1, foundTickets.size());
-        assertEquals(testTicket.getPrice(), foundTickets.getFirst().getPrice());
-        assertEquals(testTicket.getStatus(), foundTickets.getFirst().getStatus());
-        assertEquals(testTicket.getUser().getPhoneNumber(), foundTickets.getFirst().getUser().getPhoneNumber());
-        assertEquals(testTicket.getTrain().getName(), foundTickets.getFirst().getTrain().getName());
-
+        assertNotNull(actualTickets, "The returned ticket list should not be null");
+        assertEquals(1, actualTickets.size(), "Ticket list size should be 1");
+        assertTicketEquals(expectedTicket, actualTickets.getFirst());
         verify(ticketRepository, times(1)).findAllTicketsByTrain_Number(trainNumber);
     }
 
     @Test
-    void getAllTicketsOfNonExistentTrain() {
-        var trainNumber = "999";
+    @DisplayName("Should return empty list for non-existent train")
+    void shouldReturnEmptyTicketsForNonExistentTrain() {
+        final var nonExistentTrainNumber = "999";
+        when(ticketRepository.findAllTicketsByTrain_Number(nonExistentTrainNumber)).thenReturn(List.of());
 
-        when(ticketRepository.findAllTicketsByTrain_Number(trainNumber)).thenReturn(List.of());
-        var foundTickets = ticketService.getAllTicketsOfTrain(trainNumber);
-        assertNotNull(foundTickets);
-        assertEquals(0, foundTickets.size());
+        var actualTickets = ticketService.getAllTicketsOfTrain(nonExistentTrainNumber);
 
-        verify(ticketRepository, times(1)).findAllTicketsByTrain_Number(trainNumber);
+        assertNotNull(actualTickets, "The returned ticket list should not be null");
+        assertTrue(actualTickets.isEmpty(), "Ticket list should be empty");
+        verify(ticketRepository, times(1)).findAllTicketsByTrain_Number(nonExistentTrainNumber);
+    }
+
+    private void assertTicketEquals(final Ticket expected, final TicketDTO actual) {
+        assertEquals(expected.getPrice(), actual.getPrice(), "Ticket price should match");
+        assertEquals(expected.getStatus(), actual.getStatus(), "Ticket status should match");
+        assertEquals(expected.getUser().getPhoneNumber(), actual.getUser().getPhoneNumber(), "User phone number should match");
+        assertEquals(expected.getTrain().getName(), actual.getTrain().getName(), "Train name should match");
     }
 
     private Ticket createTestTicket() {
-        // Создаем станции
-        Station stationA = Station.builder()
-                .name("Station A")
-                .city("City A")
-                .country("Country A")
+        var now = LocalDateTime.now();
+        return Ticket.builder()
+                .user(buildTestUser())
+                .train(buildTestTrain())
+                .car(buildTestCar())
+                .seat(buildTestSeat())
+                .departureStation(buildRoute(now, "Station A"))
+                .arrivalStation(buildRoute(now.plusHours(2), "Station B"))
+                .price(100.0)
+                .status(TicketStatus.BOOKED)
                 .build();
+    }
 
-        Station stationB = Station.builder()
-                .name("Station B")
-                .city("City B")
-                .country("Country B")
-                .build();
 
-// Создаем поезд
-        Train train = Train.builder()
-                .number("123")
-                .name("Test Train")
-                .totalCars(5)
-                .build();
-
-// Создаем маршруты (departureStation и arrivalStation)
-        LocalDateTime now = LocalDateTime.now();
-        Route route1 = Route.builder()
-                .train(train)
-                .station(stationA)
-                .stopOrder(1)
-                .arrivalTime(now)
-                .departureTime(now.plusHours(1))
-                .build();
-
-        Route route2 = Route.builder()
-                .train(train)
-                .station(stationB)
-                .stopOrder(2)
-                .arrivalTime(now.plusHours(2))
-                .departureTime(now.plusHours(3))
-                .build();
-
-// Создаем вагон
-        Car car = Car.builder()
-                .train(train)
-                .number(1)
-                .type(CarType.COUPE)
-                .totalSeats(36)
-                .build();
-
-// Создаем место
-        Seat seat = Seat.builder()
-                .car(car)
-                .number(1)
-                .type(SeatType.LOWER)
-                .build();
-
-// Создаем пользователя
-        User user = User.builder()
+    private User buildTestUser() {
+        return User.builder()
                 .id(1L)
                 .firstName("Test")
                 .lastName("User")
@@ -176,18 +141,48 @@ public class TicketServiceTest {
                 .phoneNumber("1234567890")
                 .role(Role.USER)
                 .build();
+    }
 
-// Создаем тестовый объект Ticket
+    private Train buildTestTrain() {
+        return Train.builder()
+                .number("123")
+                .name("Test Train")
+                .totalCars(5)
+                .build();
+    }
 
-        return Ticket.builder()
-                .user(user)
-                .train(train)
-                .car(car)
-                .seat(seat)
-                .departureStation(route1)
-                .arrivalStation(route2)
-                .price(100.0)
-                .status(TicketStatus.BOOKED)
+    private Car buildTestCar() {
+        return Car.builder()
+                .train(buildTestTrain())
+                .number(1)
+                .type(CarType.COUPE)
+                .totalSeats(36)
+                .build();
+    }
+
+    private Seat buildTestSeat() {
+        return Seat.builder()
+                .car(buildTestCar())
+                .number(1)
+                .type(SeatType.LOWER)
+                .build();
+    }
+
+    private Route buildRoute(LocalDateTime time, String stationName) {
+        return Route.builder()
+                .train(buildTestTrain())
+                .station(buildStation(stationName))
+                .stopOrder(1)
+                .arrivalTime(time)
+                .departureTime(time.plusHours(1))
+                .build();
+    }
+
+    private Station buildStation(String name) {
+        return Station.builder()
+                .name(name)
+                .city("City " + name.charAt(name.length() - 1))
+                .country("Country " + name.charAt(name.length() - 1))
                 .build();
     }
 }
