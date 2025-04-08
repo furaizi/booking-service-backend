@@ -40,7 +40,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    @DisplayName("Should return all tickets when repository returns tickets")
     void shouldReturnAllTickets() {
         final var expectedTicket = createTestTicket();
         when(ticketRepository.findAll()).thenReturn(List.of(expectedTicket));
@@ -54,7 +53,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    @DisplayName("Should return tickets for given user")
     void shouldReturnTicketsForUser() {
         final var expectedTicket = createTestTicket();
         final var userId = expectedTicket.getUser().getId();
@@ -69,7 +67,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    @DisplayName("Should return empty list for non-existent user")
     void shouldReturnEmptyTicketsForNonExistentUser() {
         final var nonExistentUserId = 999L;
         when(ticketRepository.findAllTicketsByUser_Id(nonExistentUserId)).thenReturn(List.of());
@@ -82,7 +79,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    @DisplayName("Should return tickets for given train")
     void shouldReturnTicketsForTrain() {
         final var expectedTicket = createTestTicket();
         final var trainNumber = expectedTicket.getTrain().getNumber();
@@ -97,7 +93,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    @DisplayName("Should return empty list for non-existent train")
     void shouldReturnEmptyTicketsForNonExistentTrain() {
         final var nonExistentTrainNumber = "999";
         when(ticketRepository.findAllTicketsByTrain_Number(nonExistentTrainNumber)).thenReturn(List.of());
@@ -116,7 +111,7 @@ public class TicketServiceTest {
         assertEquals(expected.getTrain().getName(), actual.getTrain().getName(), "Train name should match");
     }
 
-    private Ticket createTestTicket() {
+    static Ticket createTestTicket() {
         var now = LocalDateTime.now();
         return Ticket.builder()
                 .user(buildTestUser())
@@ -131,7 +126,7 @@ public class TicketServiceTest {
     }
 
 
-    private User buildTestUser() {
+    private static User buildTestUser() {
         return User.builder()
                 .id(1L)
                 .firstName("Test")
@@ -143,7 +138,7 @@ public class TicketServiceTest {
                 .build();
     }
 
-    private Train buildTestTrain() {
+    private static Train buildTestTrain() {
         return Train.builder()
                 .number("123")
                 .name("Test Train")
@@ -151,7 +146,7 @@ public class TicketServiceTest {
                 .build();
     }
 
-    private Car buildTestCar() {
+    private static Car buildTestCar() {
         return Car.builder()
                 .train(buildTestTrain())
                 .number(1)
@@ -160,7 +155,7 @@ public class TicketServiceTest {
                 .build();
     }
 
-    private Seat buildTestSeat() {
+    private static Seat buildTestSeat() {
         return Seat.builder()
                 .car(buildTestCar())
                 .number(1)
@@ -168,7 +163,7 @@ public class TicketServiceTest {
                 .build();
     }
 
-    private Route buildRoute(LocalDateTime time, String stationName) {
+    private static Route buildRoute(LocalDateTime time, String stationName) {
         return Route.builder()
                 .train(buildTestTrain())
                 .station(buildStation(stationName))
@@ -178,7 +173,7 @@ public class TicketServiceTest {
                 .build();
     }
 
-    private Station buildStation(String name) {
+    private static Station buildStation(String name) {
         return Station.builder()
                 .name(name)
                 .city("City " + name.charAt(name.length() - 1))
